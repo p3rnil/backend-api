@@ -1,0 +1,37 @@
+type Device {
+  _id: ID!
+  state: String!
+  temperature: Float
+  speed: Float
+  analysis: String
+  location: String
+  tank: Tank
+  user: User
+  createdAt: String @formatDate
+  updatedAt: String @formatDate
+}
+
+input UpdateDeviceInput {
+  state: String
+  temperature: Float
+  speed: Float
+  analysis: String
+  location: String
+  user: UpdateUserInput
+  tank: UpdateTankInput
+}
+
+extend type Query {
+  device(id: ID!): Device! @authenticated
+  devices: [Device]! @authenticated
+}
+
+extend type Mutation {
+  createDevice: Device! @authorized @authenticated
+
+  updateDevice(id: ID!, input: UpdateDeviceInput!): Device!
+    @authorized
+    @authenticated
+
+  deleteDevice(id: ID!): Device! @authorized @authenticated
+}
