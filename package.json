@@ -10,7 +10,7 @@
     "testingWin": "SET NODE_ENV=testing& nodemon src/index.js",
     "dev": "NODE_ENV=dev nodemon src/index.js",
     "testing": "NODE_ENV=testing nodemon src/index.js",
-    "cloud": "NODE_ENV=cloud nodemon src/index.js",
+    "cloud": "NODE_ENV=cloud node src/index.js",
     "test": "jest",
     "test-schema": "jest -t='Task resolvers'"
   },
