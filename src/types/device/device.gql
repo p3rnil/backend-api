@@ -29,7 +29,7 @@ extend type Query {
 extend type Mutation {
   createDevice: Device! @authorized @authenticated
 
-  updateDevice(id: ID!, input: UpdateDeviceInput!): Device!
+  updateDevice(id: ID!, input: UpdateDeviceInput!): Device
     @authorized
     @authenticated
 
