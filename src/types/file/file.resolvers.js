@@ -1,5 +1,5 @@
 const { GraphQLUpload } = require('graphql-upload')
-const { finished } = require('stream/promises')
+// const { finished } = require('stream/promises')
 
 const singleUpload = async (parent, { file }) => {
   const { createReadStream, filename, mimetype, encoding } = await file
@@ -12,7 +12,7 @@ const singleUpload = async (parent, { file }) => {
   // local-file-output.txt in the current working directory on EACH upload.
   const out = require('fs').createWriteStream('local-file-output.txt')
   stream.pipe(out)
-  await finished(out)
+  // await finished(out)
 
   return { filename, mimetype, encoding }
 }
