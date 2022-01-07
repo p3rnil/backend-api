@@ -32,8 +32,9 @@ module.exports = {
     async tank(device, __, { Tank }) {
       return await Tank.findById(device.tank).lean().exec()
     },
-    async user(device, __, { User }) {
-      return await User.findById(device.user).lean().exec()
-    },
+    // ,
+    // async user(device, __, { User }) {
+    //   return await User.findById(device.user).lean().exec()
+    // },
   },
 }

@@ -1,3 +1,3 @@
-const start = require('./server')
+const startServer = require('./server')
 
-start()
+startServer()

@@ -1,5 +1,7 @@
 const { AuthenticationError } = require('apollo-server')
 const { createToken } = require('../../utils/auth')
+const { GraphQLUpload } = require('graphql-upload')
+const { finished } = require('stream/promises')
 
 const userTypeMatcher = {
   SUPER_ADMIN: 'SuperAdmin',
@@ -20,7 +22,11 @@ const createUser = async (_, { input }, { User }) => {
 }
 
 const updateUser = async (_, { id, input }, { User }) => {
-  return await User.findByIdAndUpdate(id, input, { new: true }).lean().exec()
+  const result = await User.findByIdAndUpdate(id, input, { new: true })
+    .lean()
+    .exec()
+  console.log('result:', result)
+  return result
 }
 
 const removeUser = async (_, { id }, { User }) => {
@@ -60,6 +66,22 @@ const signup = async (_, { input }, { User }) => {
   return { token, user }
 }
 
+const singleUpload = async (parent, { file }) => {
+  const { createReadStream, filename, mimetype, encoding } = await file
+
+  // Invoking the `createReadStream` will return a Readable Stream.
+  // See https://nodejs.org/api/stream.html#stream_readable_streams
+  const stream = createReadStream()
+
+  // This is purely for demonstration purposes and will overwrite the
+  // local-file-output.txt in the current working directory on EACH upload.
+  const out = require('fs').createWriteStream('local-file-output.txt')
+  stream.pipe(out)
+  await finished(out)
+
+  return { filename, mimetype, encoding }
+}
+
 module.exports = {
   Query: {
     user,
@@ -71,13 +93,18 @@ module.exports = {
     removeUser,
     signin,
     signup,
+    singleUpload,
   },
+  Upload: GraphQLUpload,
   User: {
     async __resolveType(user) {
       return userTypeMatcher[user.role]
     },
-    async company(_, __, { user, Company }) {
+    async company(user, __, { ctxUser, Company }) {
       return await Company.findById(user.company).lean().exec()
+    },
+    async devices(user, __, { ctxUser, Device }) {
+      return await Device.findById(user.device).lean().exec()
     },
   },
 }

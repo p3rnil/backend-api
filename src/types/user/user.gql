@@ -18,6 +18,7 @@ type User {
   resetPasswordEmailSent: String @formatDate
   lastResetPassword: String @formatDate
   company: Company!
+  devices: [Device]
 }
 
 type AuthUser {
@@ -32,7 +33,7 @@ input NewUserInput {
   role: Role!
   email: String!
   password: String!
-  company: NewCompanyInput!
+  company: String!
 }
 
 input UpdateUserInput {
@@ -43,6 +44,8 @@ input UpdateUserInput {
   role: Role
   email: String
   password: String
+  company: String
+  devices: [String]
 }
 
 input SignInput {

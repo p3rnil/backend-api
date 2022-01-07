@@ -6,9 +6,17 @@ type Device {
   analysis: String
   location: String
   tank: Tank
-  user: User
   createdAt: String @formatDate
   updatedAt: String @formatDate
+}
+
+input NewTankInput {
+  state: String
+  temperature: Float
+  speed: Float
+  analysis: String
+  location: String
+  tank: String
 }
 
 input UpdateDeviceInput {
@@ -17,8 +25,7 @@ input UpdateDeviceInput {
   speed: Float
   analysis: String
   location: String
-  user: UpdateUserInput
-  tank: UpdateTankInput
+  tank: String
 }
 
 extend type Query {
@@ -27,7 +34,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  createDevice: Device! @authorized @authenticated
+  createDevice(input: NewTankInput!): Device! @authorized @authenticated
 
   updateDevice(id: ID!, input: UpdateDeviceInput!): Device
     @authorized

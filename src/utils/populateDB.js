@@ -19,6 +19,20 @@ const populateDB = async () => {
 
   const tankList = await models.Tank.create(tank)
 
+  // Device
+  const device = [
+    {
+      state: 'Online',
+      tank: tankList[0]._id,
+    },
+    {
+      state: 'Online',
+      tank: tankList[0]._id,
+    },
+  ]
+
+  const deviceList = await models.Device.create(device)
+
   // Companies
   const companies = [
     {
@@ -28,10 +42,17 @@ const populateDB = async () => {
       country: 'Spain',
       cif: '123245432456',
     },
+    {
+      name: 'Test Company',
+      phone: '1234567',
+      address: 'Calle de la piruleta',
+      country: 'Spain',
+      cif: '123245432456',
+    },
   ]
 
   const companiesList = await models.Company.create(companies)
-
+  console.log(deviceList[0]._id)
   // Users
   const users = [
     {
@@ -43,6 +64,7 @@ const populateDB = async () => {
       phone: '648861679',
       role: 'SUPER_ADMIN',
       company: companiesList[0]._id,
+      devices: deviceList, //deviceList[0]._id,
     },
     {
       name: 'Admin',
@@ -67,17 +89,6 @@ const populateDB = async () => {
   ]
 
   const userList = await models.User.create(users)
-
-  // Device
-  const device = [
-    {
-      state: 'Online',
-      tank: tankList[0]._id,
-      user: userList[0]._id,
-    },
-  ]
-
-  const deviceList = await models.Device.create(device)
 
   // const tasks = [
   //   {

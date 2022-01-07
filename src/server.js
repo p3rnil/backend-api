@@ -1,5 +1,7 @@
-const { ApolloServer, AuthenticationError } = require('apollo-server')
+const express = require('express')
+const { ApolloServer, AuthenticationError } = require('apollo-server-express')
 const { makeExecutableSchema } = require('@graphql-tools/schema')
+const { graphqlUploadExpress } = require('graphql-upload')
 const utilsDB = require('./utils/populateDB')
 const config = require('./config')
 const { getUserFromToken } = require('./utils/auth')
@@ -45,6 +47,7 @@ const start = async () => {
         token = token.slice(7, token.length)
       }
 
+      console.log('token', token)
       const user = await getUserFromToken(token)
       return { ...models, user }
     },
@@ -53,10 +56,18 @@ const start = async () => {
   await connect(config.dbUrl)
   await utilsDB.truncateDB()
   await utilsDB.populateDB()
+  await server.start()
 
-  const { url } = await server.listen({ port: config.port })
+  const app = express()
 
-  console.log(`GQL server ready at ${url} 🚀 `)
+  // This middleware should be added before calling `applyMiddleware`.
+  app.use(graphqlUploadExpress())
+
+  server.applyMiddleware({ app })
+
+  await new Promise((r) => app.listen({ port: 4000 }, r))
+
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
   console.log('GQL server config:', config)
 }
 

@@ -18,11 +18,6 @@ const deviceSchema = new mongoose.Schema(
     location: {
       type: String,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'user',
-      required: true,
-    },
     tank: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'tank',
