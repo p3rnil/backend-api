@@ -54,8 +54,8 @@ const start = async () => {
   })
 
   await connect(config.dbUrl)
-  await utilsDB.truncateDB()
-  await utilsDB.populateDB()
+  // await utilsDB.truncateDB()
+  // await utilsDB.populateDB()
   await server.start()
 
   const app = express()
